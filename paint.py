@@ -120,11 +120,13 @@ def buttcyan():
 
 def buttadd():
     global linesize
-    linesize += 0.5
+    if linesize < 10:
+        linesize += 1
 
 def buttsub():
     global linesize
-    linesize -= 0.5
+    if linesize > 0:
+        linesize -= 1
 
 def b1down(event):
     global b1
