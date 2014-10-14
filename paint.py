@@ -1,6 +1,8 @@
 from Tkinter import *
+import tkMessageBox
 import sys
 import os
+import subprocess
 
 #A reeeeaaally simple "paint" program
 
@@ -8,6 +10,7 @@ b1 = "up"
 xold, yold = None, None
 color= "black"
 linesize = 2
+#quotes = subprocess.Popen(['fortune'], stdout=subprocess.PIPE).communicate()[0]
 
 def main():
     root = Tk()
@@ -37,7 +40,7 @@ def main():
     buttonyellow.configure(width = 3, background = "#FFFF00", relief = FLAT)
     buttonyellow_window = drawing_area.create_window(940, 0, anchor=N, window=buttonyellow)
 
-    button1 = Button(root, text = "Clear", command = restart_program, anchor = N)
+    button1 = Button(root, text = "Reset", command = restart_program, anchor = N)
     button1.configure(width = 3, background = "#FFFFFF", relief = FLAT)
     button1_window = drawing_area.create_window(640, 0, anchor=N, window=button1)
 
@@ -45,7 +48,7 @@ def main():
     buttoneraser.configure(width = 3, background = "#FFFFFF", relief = FLAT)
     buttoneraser_window = drawing_area.create_window(690, 0, anchor=N, window=buttoneraser)
 
-    buttonquote = Button(root, text="Null", command ="", anchor = N)
+    buttonquote = Button(root, text="Quotes", command = text, anchor = N)
     buttonquote.configure(width = 3, background = "#FFFFFF", relief = FLAT)
     buttonquote_window = drawing_area.create_window(590, 0, anchor=N, window=buttonquote)
 
@@ -75,12 +78,16 @@ def main():
 
     root.geometry('1280x720')
     root.geometry('+200+200')
-    #root.overrideredirect(True)         #No border
+    root.overrideredirect(True)         #No border
     root.mainloop()
 
 def restart_program():
     python = sys.executable
     os.execl(python, python, * sys.argv)
+
+def text():
+    quotes = subprocess.Popen(['fortune'], stdout=subprocess.PIPE).communicate()[0]
+    tkMessageBox.showinfo("Timeless Quotes", quotes)
 
 def buttred():
     global color
@@ -121,10 +128,6 @@ def buttbrown():
 def butter():
     global color
     color= "white"
-
-def buttquotes():
-    quotevar = os.popen("wget --timeout=3 -O - -q http://www.iheartquotes.com/api/v1/random").read()
-    drawing_area.insert(INSERT, quotevar)
 
 def buttadd():
     global linesize
