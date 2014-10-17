@@ -10,15 +10,23 @@ b1 = "up"
 xold, yold = None, None
 color= "black"
 linesize = 2
-#quotes = subprocess.Popen(['fortune'], stdout=subprocess.PIPE).communicate()[0]
 
 def main():
+    global root
     root = Tk()
+    global drawing_area
     drawing_area = Canvas(root, width=1280, height=720, background="white")
     drawing_area.pack()
     drawing_area.bind("<Motion>", motion)
     drawing_area.bind("<ButtonPress-1>", b1down)
     drawing_area.bind("<ButtonRelease-1>", b1up)
+    
+    global drawing_area_id
+    drawing_area_id = drawing_area.create_text(290, 10, anchor=NW)
+    drawing_area.itemconfig(drawing_area_id, text = linesize)
+
+    global square
+    square = drawing_area.create_rectangle(20,0,60,40, fill="black")
 
     buttonred = Button(root, command = buttred, anchor = N)
     buttonred.configure(width = 3, background = "#FF0000", relief = FLAT)
@@ -68,17 +76,21 @@ def main():
     buttonbrown.configure(width = 3, background = "#A52A2A", relief = FLAT)
     buttonbrown_window = drawing_area.create_window(390, 0, anchor=N, window=buttonbrown)
 
+    buttoncyan = Button(root, command = buttcyan, anchor = N)
+    buttoncyan.configure(width = 3, background = "#00FFFF", relief = FLAT)
+    buttoncyan_window = drawing_area.create_window(340, 0, anchor=N, window=buttoncyan)
+
     buttonsub = Button(root, text="-", command = buttsub, anchor = N)
     buttonsub.configure(width = 3, background = "#FFFFFF", relief = FLAT)
-    buttonsub_window = drawing_area.create_window(290, 0, anchor=N, window=buttonsub)
+    buttonsub_window = drawing_area.create_window(240, 0, anchor=N, window=buttonsub)
 
     buttonadd = Button(root, text="+", command = buttadd, anchor = N)
     buttonadd.configure(width = 3, background = "#FFFFFF", relief = FLAT)
-    buttonadd_window = drawing_area.create_window(240, 0, anchor=N, window=buttonadd)
+    buttonadd_window = drawing_area.create_window(190, 0, anchor=N, window=buttonadd)
 
     root.geometry('1280x720')
     root.geometry('+200+200')
-    root.overrideredirect(True)         #No border
+    #root.overrideredirect(True)         #No border
     root.mainloop()
 
 def restart_program():
@@ -92,52 +104,97 @@ def text():
 def buttred():
     global color
     color= "red"
+    global square
+    drawing_area.delete(square)
+    square = drawing_area.create_rectangle(20,0,60,40, fill="red")
 
 def buttblack():
     global color
     color= "black"
+    global square
+    drawing_area.delete(square)
+    square = drawing_area.create_rectangle(20,0,60,40, fill="black")
 
 def buttgreen():
     global color
     color= "green"
+    global square
+    drawing_area.delete(square)
+    square = drawing_area.create_rectangle(20,0,60,40, fill="green")
 
 def buttblue():
     global color
     color= "blue"
+    global square
+    drawing_area.delete(square)
+    square = drawing_area.create_rectangle(20,0,60,40, fill="blue")
 
 def buttyellow():
     global color
     color= "yellow"
+    global square
+    drawing_area.delete(square)
+    square = drawing_area.create_rectangle(20,0,60,40, fill="yellow")
 
 def buttgrey():
     global color
     color= "grey"
+    global square
+    drawing_area.delete(square)
+    square = drawing_area.create_rectangle(20,0,60,40, fill="grey")
 
 def buttpurple():
     global color
     color= "purple"
+    global square
+    drawing_area.delete(square)
+    square = drawing_area.create_rectangle(20,0,60,40, fill="purple")
 
 def buttorange():
     global color
     color= "orange"
+    global square
+    drawing_area.delete(square)
+    square = drawing_area.create_rectangle(20,0,60,40, fill="orange")
 
 def buttbrown():
     global color
     color= "brown"
+    global square
+    drawing_area.delete(square)
+    square = drawing_area.create_rectangle(20,0,60,40, fill="brown")
+
+def buttcyan():
+    global color
+    color= "cyan"
+    global square
+    drawing_area.delete(square)
+    square = drawing_area.create_rectangle(20,0,60,40, fill="cyan")
 
 def butter():
     global color
     color= "white"
+    global square
+    drawing_area.delete(square)
+    square = drawing_area.create_rectangle(20,0,60,40, fill="white")
 
 def buttadd():
     global linesize
     if linesize < 10:
         linesize += 1
+    global drawing_area_id
+    drawing_area.delete(drawing_area_id)
+    drawing_area_id = drawing_area.create_text(290, 10, anchor=NW)
+    drawing_area.itemconfig(drawing_area_id, text = linesize)
 
 def buttsub():
     global linesize
-    if linesize > 0:
+    if linesize > 1:
         linesize -= 1
+    global drawing_area_id
+    drawing_area.delete(drawing_area_id)
+    drawing_area_id = drawing_area.create_text(290, 10, anchor=NW)
+    drawing_area.itemconfig(drawing_area_id, text = linesize)
 
 def b1down(event):
     global b1
