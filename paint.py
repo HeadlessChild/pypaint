@@ -48,7 +48,7 @@ def main():
     buttonyellow.configure(width = 3, background = "#FFFF00", relief = FLAT)
     buttonyellow_window = drawing_area.create_window(940, 0, anchor=N, window=buttonyellow)
 
-    button1 = Button(root, text = "Reset", command = restart_program, anchor = N)
+    button1 = Button(root, text = "Clear", command = remove_lines, anchor = N)
     button1.configure(width = 3, background = "#FFFFFF", relief = FLAT)
     button1_window = drawing_area.create_window(640, 0, anchor=N, window=button1)
 
@@ -93,9 +93,8 @@ def main():
     #root.overrideredirect(True)         #No border
     root.mainloop()
 
-def restart_program():
-    python = sys.executable
-    os.execl(python, python, * sys.argv)
+def remove_lines():
+    drawing_area.delete("lines")
 
 def text():
     quotes = subprocess.Popen(['fortune'], stdout=subprocess.PIPE).communicate()[0]
@@ -210,7 +209,7 @@ def motion(event):
     if b1 == "down":
         global xold, yold
         if xold is not None and yold is not None:
-            event.widget.create_line(xold,yold,event.x,event.y,smooth=TRUE,fill = color, width=linesize)
+            event.widget.create_line(xold,yold,event.x,event.y,smooth=TRUE,fill = color, width=linesize, tag="lines")
         xold = event.x
         yold = event.y
 
