@@ -6,19 +6,12 @@ import subprocess
 import time
 import threading
 
-#Dependencies
-#python-tk
-#python-pip
-#livestreamer (python pip install livestreamer) 
-#fortune
-
-###### Start KITTENS thread ######
-
-#####################
-#thread = threading.Thread(target=player_refresher, args=())
-#thread.daemon = True
-#thread.start() 
-#A reeeeaaally simple "paint" program
+####################### Dependencies ####################
+# python-tk						#
+# python-pip						#
+# livestreamer (python pip install livestreamer) 	#
+# fortune						#
+#########################################################
 
 b1 = "up"
 xold, yold = None, None
@@ -49,7 +42,6 @@ def player_refresher():
         time.sleep(600)
         os.system("killall -9 mplayer")
         proc1.kill()
-#####################
 
 def main():
     thread = threading.Thread(target=player_refresher, args=())
@@ -137,7 +129,7 @@ def main():
 
     root.geometry('1050x1200')
     root.geometry('+0+720')
-    #root.overrideredirect(True)         #No border
+    root.overrideredirect(True)         #No border
     root.mainloop()
 
 def remove_lines():
