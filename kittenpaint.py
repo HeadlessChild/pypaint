@@ -4,6 +4,7 @@ import sys
 import os
 import subprocess
 import time
+import threading
 
 #Dependencies
 #python-tk
@@ -14,9 +15,9 @@ import time
 ###### Start KITTENS thread ######
 
 #####################
-thread = threading.Thread(target=self.player_refresher, args=())
-thread.daemon = True
-thread.start() 
+#thread = threading.Thread(target=player_refresher, args=())
+#thread.daemon = True
+#thread.start() 
 #A reeeeaaally simple "paint" program
 
 b1 = "up"
@@ -30,17 +31,17 @@ def player_refresher():
     cmd = ""
     path = ""
     if os.geteuid() == 0:
-        path = "/root/.config/livestreamer"
+        path = "root/.config/livestreamer"
         cmd = "livestreamer %s best --player-continuous-http --player-no-close --yes-run-as-root" % url
     if not os.geteuid() == 0:
-        path = '/%s/.config/livestreamer' % os.environ['HOME']
+        path = '%s/.config/livestreamer' % os.environ['HOME']
         cmd = "livestreamer %s best --player-continuous-http --player-no-close" % url
     
     if not os.path.exists(path):
         os.makedirs(path)
-    lscfgroot = open(path, 'w+')
+    lscfgroot = open(path + "/config", 'w+')
     lscfgroot.write("player=mplayer -geometry 0%:0% -nomouseinput -loop 100 -noborder -fixed-vo")
-    lscfgroot.close()    
+    lscfgroot.close() 
         
     #restarting the player every 10th minute to catch up on possible delay
     while True:
@@ -51,6 +52,9 @@ def player_refresher():
 #####################
 
 def main():
+    thread = threading.Thread(target=player_refresher, args=())
+    thread.daemon = True
+    thread.start() 
     global root
     root = Tk()
     global drawing_area
@@ -133,7 +137,7 @@ def main():
 
     root.geometry('1050x1200')
     root.geometry('+0+720')
-    root.overrideredirect(True)         #No border
+    #root.overrideredirect(True)         #No border
     root.mainloop()
 
 def remove_lines():
