@@ -4,54 +4,49 @@ import sys
 import os
 import subprocess
 import time
+import threading
 
-#Dependencies
-#python-tk
-#python-pip
-#livestreamer (python pip install livestreamer) 
-#fortune
-
-###### KITTENS ######
-url = "http://new.livestream.com/accounts/398160/events/3155348"
-home = os.environ['HOME']
-
-if os.geteuid() == 0:
-    if not os.path.exists('/root/.config/livestreamer'):
-        os.makedirs('/root/.config/livestreamer')
-    lscfgroot = open('/root/.config/livestreamer/config', 'w+')
-    lscfgroot.write("player=mplayer -geometry 0%:0% -nomouseinput -loop 100 -noborder -fixed-vo")
-    lscfgroot.close()
-    cmd = "livestreamer %s best --player-continuous-http --player-no-close" % url
-    #restarting the player every 10th minute to catch up on possible delay
-    while True:
-        proc1 = subprocess.Popen(cmd.split(), shell=False)
-        time.sleep(600)
-        os.system("killall -9 mplayer")
-        proc1.kill()
-
-if not os.geteuid() == 0:
-    if not os.path.exists('/%s/.config/livestreamer' % home):
-        os.makedirs('/%s/.config/livestreamer' % home)
-    lscfg = open('%s/.config/livestreamer/config' % home, 'w+')
-    lscfg.write("player=mplayer -geometry 0%:0% -nomouseinput -loop 100 -noborder -fixed-vo")
-    lscfg.close()
-    cmd = "livestreamer %s best --player-continuous-http --player-no-close" % url
-    #restarting the player every 10th minute to catch up on possible delay
-    while True:
-        proc1 = subprocess.Popen(cmd.split(), shell=False)
-        time.sleep(600)
-        os.system("killall -9 mplayer")
-        proc1.kill()
-#####################
-
-#A reeeeaaally simple "paint" program
+####################### Dependencies ####################
+# python-tk						#
+# python-pip						#
+# livestreamer (python pip install livestreamer) 	#
+# fortune						#
+#########################################################
 
 b1 = "up"
 xold, yold = None, None
 color= "black"
 linesize = 2
 
+###### KITTENS ######
+def player_refresher():
+    url = "http://new.livestream.com/accounts/398160/events/3155348"
+    cmd = ""
+    path = ""
+    if os.geteuid() == 0:
+        path = "root/.config/livestreamer"
+        cmd = "livestreamer %s best --player-continuous-http --player-no-close --yes-run-as-root" % url
+    if not os.geteuid() == 0:
+        path = '%s/.config/livestreamer' % os.environ['HOME']
+        cmd = "livestreamer %s best --player-continuous-http --player-no-close" % url
+    
+    if not os.path.exists(path):
+        os.makedirs(path)
+    lscfgroot = open(path + "/config", 'w+')
+    lscfgroot.write("player=mplayer -geometry 0%:0% -nomouseinput -loop 100 -noborder -fixed-vo")
+    lscfgroot.close() 
+        
+    #restarting the player every 10th minute to catch up on possible delay
+    while True:
+        proc1 = subprocess.Popen(cmd.split(), shell=False)
+        time.sleep(600)
+        os.system("killall -9 mplayer")
+        proc1.kill()
+
 def main():
+    thread = threading.Thread(target=player_refresher, args=())
+    thread.daemon = True
+    thread.start() 
     global root
     root = Tk()
     global drawing_area
