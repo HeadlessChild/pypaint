@@ -5,6 +5,7 @@ import os
 import subprocess
 import time
 import threading
+import commands
 
 ####################### Dependencies ####################
 # python-tk						#
@@ -40,9 +41,13 @@ def player_refresher():
     #restarting the player every 10th minute to catch up on possible delay
     while True:
         proc1 = subprocess.Popen(cmd.split(), shell=False)
-        time.sleep(600)
-        os.system("killall -9 mplayer")
-        proc1.kill()
+        time.sleep(10)
+	aliveout = commands.getoutput('ps -A')
+	if 'mplayer' in aliveout:
+		os.system("killall -9 mplayer")
+        	proc1.kill()
+	else:
+		break
 
 def main():
     thread = threading.Thread(target=player_refresher, args=())
