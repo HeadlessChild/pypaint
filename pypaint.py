@@ -5,6 +5,14 @@ import os
 import subprocess
 import urllib2
 
+
+####################### Dependencies ####################
+# python-tk 						#
+# python-pip 						#
+# livestreamer (python pip install livestreamer) 	#
+# fortune 						#
+#########################################################
+
 #A reeeeaaally simple "paint" program
 
 b1 = "up"
@@ -53,7 +61,7 @@ def main():
     buttonyellow.configure(width = 3, background = "#FFFF00", relief = FLAT)
     buttonyellow_window = drawing_area.create_window(940, 0, anchor=N, window=buttonyellow)
 
-    button1 = Button(root, text = "Reset", command = remove_lines, anchor = N)
+    button1 = Button(root, text = "Clear", command = remove_lines, anchor = N)
     button1.configure(width = 3, background = "#FFFFFF", relief = FLAT)
     button1_window = drawing_area.create_window(640, 0, anchor=N, window=button1)
 
@@ -95,7 +103,8 @@ def main():
 
     root.geometry('1280x720')
     root.geometry('+200+200')
-    #root.overrideredirect(True)         #No border
+    #Remove comment to disable border on window
+    #root.overrideredirect(True)
     root.mainloop()
 
 def remove_lines():
