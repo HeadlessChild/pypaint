@@ -33,7 +33,8 @@ def player_refresher():
     if not os.path.exists(path):
         os.makedirs(path)
     lscfgroot = open(path + "/config", 'w+')
-    lscfgroot.write("player=mplayer -geometry 0%:0% -nomouseinput -loop 100 -noborder -fixed-vo")
+    #Add '-noborder' after mplayer to disable border
+    lscfgroot.write("player=mplayer -geometry 0%:0% -nomouseinput -loop 100 -fixed-vo")
     lscfgroot.close() 
         
     #restarting the player every 10th minute to catch up on possible delay
@@ -50,7 +51,7 @@ def main():
     global root
     root = Tk()
     global drawing_area
-    drawing_area = Canvas(root, width=1050, height=1200, background="white")
+    drawing_area = Canvas(root, width=1280, height=720, background="white")
     drawing_area.pack()
     drawing_area.bind("<Motion>", motion)
     drawing_area.bind("<ButtonPress-1>", b1down)
@@ -127,9 +128,10 @@ def main():
     buttonadd.configure(width = 3, background = "#FFFFFF", relief = FLAT)
     buttonadd_window = drawing_area.create_window(190, 0, anchor=N, window=buttonadd)
 
-    root.geometry('1050x1200')
-    root.geometry('+0+720')
-    root.overrideredirect(True)         #No border
+    root.geometry('1280x720')
+    root.geometry('+200+200')
+    #Remove comment to disable border
+    #root.overrideredirect(True)
     root.mainloop()
 
 def remove_lines():
