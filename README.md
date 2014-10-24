@@ -1,3 +1,3 @@
-# pypaint - Simple paint program for Linux
+## pypaint - Simple paint program for Linux
 
-# kittenpaint - Simple paint program with a kittenstream, because why not.
+## kittenpaint - Simple paint program with a kittenstream, because why not.
