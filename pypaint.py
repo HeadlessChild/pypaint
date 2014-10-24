@@ -7,9 +7,8 @@ import urllib2
 
 
 ####################### Dependencies ####################
+# python						#
 # python-tk 						#
-# python-pip 						#
-# livestreamer (python pip install livestreamer) 	#
 # fortune 						#
 #########################################################
 
