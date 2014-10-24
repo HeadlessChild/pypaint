@@ -3,6 +3,7 @@ import tkMessageBox
 import sys
 import os
 import subprocess
+import urllib2
 
 #A reeeeaaally simple "paint" program
 
@@ -25,8 +26,12 @@ def main():
     drawing_area_id = drawing_area.create_text(290, 10, anchor=NW)
     drawing_area.itemconfig(drawing_area_id, text = linesize)
 
+    global drawing_area_id2
+    drawing_area_id2 = drawing_area.create_text(12, 0, anchor=NW)
+    drawing_area.itemconfig(drawing_area_id2, text = "Current Color")
+
     global square
-    square = drawing_area.create_rectangle(20,0,60,40, fill="black")
+    square = drawing_area.create_rectangle(18,15,80,25, fill="black")
 
     buttonred = Button(root, command = buttred, anchor = N)
     buttonred.configure(width = 3, background = "#FF0000", relief = FLAT)
@@ -48,7 +53,7 @@ def main():
     buttonyellow.configure(width = 3, background = "#FFFF00", relief = FLAT)
     buttonyellow_window = drawing_area.create_window(940, 0, anchor=N, window=buttonyellow)
 
-    button1 = Button(root, text = "Clear", command = remove_lines, anchor = N)
+    button1 = Button(root, text = "Reset", command = remove_lines, anchor = N)
     button1.configure(width = 3, background = "#FFFFFF", relief = FLAT)
     button1_window = drawing_area.create_window(640, 0, anchor=N, window=button1)
 
@@ -97,7 +102,7 @@ def remove_lines():
     drawing_area.delete("lines")
 
 def text():
-    quotes = subprocess.Popen(['fortune'], stdout=subprocess.PIPE).communicate()[0]
+    quotes = subprocess.Popen(['/usr/games/fortune'], stdout=subprocess.PIPE).communicate()[0]
     tkMessageBox.showinfo("Timeless Quotes", quotes)
 
 def buttred():
@@ -105,77 +110,77 @@ def buttred():
     color= "red"
     global square
     drawing_area.delete(square)
-    square = drawing_area.create_rectangle(20,0,60,40, fill="red")
+    square = drawing_area.create_rectangle(11,15,80,25, fill="red")
 
 def buttblack():
     global color
     color= "black"
     global square
     drawing_area.delete(square)
-    square = drawing_area.create_rectangle(20,0,60,40, fill="black")
+    square = drawing_area.create_rectangle(11,15,80,25, fill="black")
 
 def buttgreen():
     global color
     color= "green"
     global square
     drawing_area.delete(square)
-    square = drawing_area.create_rectangle(20,0,60,40, fill="green")
+    square = drawing_area.create_rectangle(11,15,80,25, fill="green")
 
 def buttblue():
     global color
     color= "blue"
     global square
     drawing_area.delete(square)
-    square = drawing_area.create_rectangle(20,0,60,40, fill="blue")
+    square = drawing_area.create_rectangle(11,15,80,25, fill="blue")
 
 def buttyellow():
     global color
     color= "yellow"
     global square
     drawing_area.delete(square)
-    square = drawing_area.create_rectangle(20,0,60,40, fill="yellow")
+    square = drawing_area.create_rectangle(11,15,80,25, fill="yellow")
 
 def buttgrey():
     global color
     color= "grey"
     global square
     drawing_area.delete(square)
-    square = drawing_area.create_rectangle(20,0,60,40, fill="grey")
+    square = drawing_area.create_rectangle(11,15,80,25, fill="grey")
 
 def buttpurple():
     global color
     color= "purple"
     global square
     drawing_area.delete(square)
-    square = drawing_area.create_rectangle(20,0,60,40, fill="purple")
+    square = drawing_area.create_rectangle(11,15,80,25, fill="purple")
 
 def buttorange():
     global color
     color= "orange"
     global square
     drawing_area.delete(square)
-    square = drawing_area.create_rectangle(20,0,60,40, fill="orange")
+    square = drawing_area.create_rectangle(11,15,80,25, fill="orange")
 
 def buttbrown():
     global color
     color= "brown"
     global square
     drawing_area.delete(square)
-    square = drawing_area.create_rectangle(20,0,60,40, fill="brown")
+    square = drawing_area.create_rectangle(11,15,80,25, fill="brown")
 
 def buttcyan():
     global color
     color= "cyan"
     global square
     drawing_area.delete(square)
-    square = drawing_area.create_rectangle(20,0,60,40, fill="cyan")
+    square = drawing_area.create_rectangle(11,15,80,25, fill="cyan")
 
 def butter():
     global color
     color= "white"
     global square
     drawing_area.delete(square)
-    square = drawing_area.create_rectangle(20,0,60,40, fill="white")
+    square = drawing_area.create_rectangle(11,15,80,25, fill="white")
 
 def buttadd():
     global linesize
