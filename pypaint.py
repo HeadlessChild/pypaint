@@ -7,9 +7,9 @@ import urllib2
 
 
 ####################### Dependencies ####################
-# python						#
-# python-tk 						#
-# fortune 						#
+# python                                                #
+# python-tk                                             #
+# fortune                                               #
 #########################################################
 
 #A reeeeaaally simple "paint" program
@@ -18,6 +18,8 @@ b1 = "up"
 xold, yold = None, None
 color= "black"
 linesize = 2
+counter = 1
+undone = []
 
 def main():
     global root
@@ -60,7 +62,15 @@ def main():
     buttonyellow.configure(width = 3, background = "#FFFF00", relief = FLAT)
     buttonyellow_window = drawing_area.create_window(940, 0, anchor=N, window=buttonyellow)
 
-    button1 = Button(root, text = "Clear", command = remove_lines, anchor = N)
+    buttonun = Button(root, text = "Undo", command = undo, anchor = N)
+    buttonun.configure(width = 3, background = "#FFFFFF", relief = FLAT)
+    buttonun_window = drawing_area.create_window(665, 28, anchor=N, window=buttonun)
+
+    buttonre = Button(root, text = "Redo", command = redo, anchor = N)
+    buttonre.configure(width = 3, background = "#FFFFFF", relief = FLAT)
+    buttonre_window = drawing_area.create_window(615, 28, anchor=N, window=buttonre)
+
+    button1 = Button(root, text = "Reset", command = remove_lines, anchor = N)
     button1.configure(width = 3, background = "#FFFFFF", relief = FLAT)
     button1_window = drawing_area.create_window(640, 0, anchor=N, window=button1)
 
@@ -68,7 +78,7 @@ def main():
     buttoneraser.configure(width = 3, background = "#FFFFFF", relief = FLAT)
     buttoneraser_window = drawing_area.create_window(690, 0, anchor=N, window=buttoneraser)
 
-    buttonquote = Button(root, text="Quotes", command = text, anchor = N)
+    buttonquote = Button(root, text="Fortune", command = text, anchor = N)
     buttonquote.configure(width = 3, background = "#FFFFFF", relief = FLAT)
     buttonquote_window = drawing_area.create_window(590, 0, anchor=N, window=buttonquote)
 
@@ -108,6 +118,8 @@ def main():
 
 def remove_lines():
     drawing_area.delete("lines")
+    global undone
+    undone = []
 
 def text():
     quotes = subprocess.Popen(['/usr/games/fortune'], stdout=subprocess.PIPE).communicate()[0]
@@ -208,6 +220,25 @@ def buttsub():
     drawing_area_id = drawing_area.create_text(290, 10, anchor=NW)
     drawing_area.itemconfig(drawing_area_id, text = linesize)
 
+def undo():
+    global counter
+    counter -= 1
+    currentlist = []
+    for item in drawing_area.find_withtag("lines"+str(counter)):
+        currentlist.append(drawing_area.coords(item))
+    drawing_area.delete("lines"+str(counter))
+    undone.append(currentlist)
+
+def redo():
+    global counter
+    try:
+        currentlist = undone.pop()
+        for coords in currentlist:
+            drawing_area.create_line(coords,smooth=TRUE,fill = color, width=linesize, tag=["lines", "lines"+str(counter)])
+        counter += 1
+    except IndexError:
+        pass
+
 def b1down(event):
     global b1
     b1 = "down"
@@ -217,12 +248,14 @@ def b1up(event):
     b1 = "up"
     xold = None
     yold = None
+    global counter
+    counter += 1
 
 def motion(event):
     if b1 == "down":
         global xold, yold
         if xold is not None and yold is not None:
-            event.widget.create_line(xold,yold,event.x,event.y,smooth=TRUE,fill = color, width=linesize, tag="lines")
+            event.widget.create_line(xold,yold,event.x,event.y,smooth=TRUE,fill = color, width=linesize, tag=["lines", "lines"+str(counter)])
         xold = event.x
         yold = event.y
 
